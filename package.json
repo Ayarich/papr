@@ -1,0 +1,41 @@
+{
+  "name": "papr",
+  "version": "0.1.0",
+  "private": true,
+  "description": "papr: Ghana's open library of student research",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "setup": "node scripts/setup.mjs",
+    "reset": "node scripts/setup.mjs --reset",
+    "make-moderator": "node scripts/make-moderator.mjs"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.15",
+    "@vercel/blob": "~2.9.0",
+    "fast-xml-parser": "~5.12.1",
+    "next": "~15.5.28",
+    "pptxgenjs": "~4.0.1",
+    "qrcode": "~1.5.4",
+    "react": "~19.1.1",
+    "react-dom": "~19.1.1",
+    "three": "^0.187.0",
+    "unpdf": "~2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/qrcode": "~1.5.5",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@types/three": "^0.187.0",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "zod": "^4.6.6",
+    "postcss": "^8.5.23"
+  }
+}
