@@ -6,11 +6,24 @@ export const APP_URL = (process.env.APP_URL
 
 /**
  * Sends an email. Every email is also saved in the database (see /dev/outbox while developing).
+ * - With GMAIL_USER and GMAIL_APP_PASSWORD set, it is sent from that Gmail account (no domain needed, about 500 a day).
  * - With RESEND_API_KEY and EMAIL_FROM set (e.g. EMAIL_FROM="papr <hello@yourdomain.com>"), it is really sent via Resend.
  * - Without them, nothing leaves the server: the email is printed in the terminal / Vercel logs.
  */
 export async function sendEmail(to: string, subject: string, body: string) {
   await run('INSERT INTO emails (id, "to", subject, body, created_at) VALUES (?,?,?,?,?)', [newId(), to, subject, body, nowIso()]);
+  const gUser = process.env.GMAIL_USER, gPass = process.env.GMAIL_APP_PASSWORD;
+  if (gUser && gPass) {
+    try {
+      const nodemailer = (await import("nodemailer")).default;
+      const t = nodemailer.createTransport({ service: "gmail", auth: { user: gUser, pass: gPass.replace(/\s+/g, "") } });
+      await t.sendMail({ from: `papr <${gUser}>`, to, subject, text: body });
+      return true;
+    } catch (e) {
+      console.error(`Email to ${to} failed (Gmail):`, (e as Error).message);
+      return false;
+    }
+  }
   const key = process.env.RESEND_API_KEY, from = process.env.EMAIL_FROM;
   if (key && from) {
     try {

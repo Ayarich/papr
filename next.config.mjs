@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // libSQL ships a native module and unpdf bundles pdf.js; keep both out of the server bundle.
-  serverExternalPackages: ["@libsql/client", "libsql", "unpdf"],
+  serverExternalPackages: ["@libsql/client", "libsql", "unpdf", "nodemailer"],
   // Hide the small Next.js badge in the corner while developing.
   devIndicators: false,
   webpack: (config, { isServer, webpack }) => {
