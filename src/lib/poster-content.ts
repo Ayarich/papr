@@ -14,8 +14,11 @@ export function posterContent(text: string, meta: { title?: string; authors?: st
   const findings = pick(sec("results") || abs, "results", 4);
   const strong = (b: string) => (/\d/.test(b) ? 1 : 0) + (/(grew|increase|declin|decreas|tripled|doubled|times|majority|most|exceed|only)/i.test(b) ? 2 : 0) - (/(accuracy|kappa)/i.test(b) ? 3 : 0);
   const headline = [...findings].sort((a, b) => strong(b) - strong(a))[0] || toBullet(sentences(abs)[0] || meta.title || "");
+  // Without a title from papr, use the first lines of the PDF up to the author / university line.
+  const head: string[] = [];
+  for (const l of before) { if (head.length >= 3 || /·|\b(Department|University|Faculty|Supervisor|College|Institute|School of)\b|@|^by\s/i.test(l)) break; head.push(l); }
   return {
-    title: titleCase(meta.title || before.slice(0, 3).join(" ") || "My research"),
+    title: titleCase(meta.title || head.join(" ") || before[0] || "My research"),
     authors: meta.authors || "", institution: meta.institution || "", supervisor: meta.supervisor || "", year: meta.year || "",
     background: pick(sec("background") || sec("problem") || abs, "background", 3),
     objectives: pick(sec("objectives"), "objectives", 4),

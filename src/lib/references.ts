@@ -2,7 +2,7 @@
 // and suggests APA 7 formatting for each entry.
 import { splitSections } from "./deck";
 
-export type Citation = { surname: string; year: string; raw: string; count: number };
+export type Citation = { surname: string; year: string; raw: string; count: number; hint?: string };
 export type RefEntry = { raw: string; surnames: string[]; year: string | null; apa: string; issues: string[]; cited: boolean };
 export type RefReport = {
   references: RefEntry[];
@@ -44,7 +44,7 @@ export function findCitations(body: string): Citation[] {
 /** Splits the reference list into entries (an entry starts with "Surname, I." or a number). */
 export function splitReferences(lines: string[]): string[] {
   const out: string[] = [];
-  const start = new RegExp(`^(\\[?\\d+[\\].]\\s+)?${SURNAME},\\s*(?:[A-Z]\\.|[A-Z][a-z]+)|^\\[\\d+\\]|^\\d+\\.\\s+[A-Z]|^[A-Z][A-Za-z ]+\\.?\\s*\\((?:19|20)\\d{2}\\)`);
+  const start = new RegExp(`^(\\[?\\d+[\\].]\\s+)?${SURNAME},\\s*(?:[A-Z]\\.|[A-Z]{1,3}\\b|[A-Z][a-z]+)|^\\[\\d+\\]|^\\d+\\.\\s+[A-Z]|^[A-Z][A-Za-z ]+\\.?\\s*\\((?:19|20)\\d{2}\\)`);
   for (const line of lines) {
     if (start.test(line) || !out.length) out.push(line);
     else out[out.length - 1] += " " + line;
@@ -71,7 +71,8 @@ export function toApa(raw: string): { apa: string; issues: string[]; surnames: s
   const apaNames = [...authorPart.matchAll(/([A-Z][A-Za-z'’\-]+(?:\s(?:van|de|der|von|da)\s[A-Z][A-Za-z'’\-]+)?),\s*((?:[A-Z]\.?\s*(?:-\s*)?)+)(?=,|\s*&|\s+and\s|$)/g)];
   let authors: string[] = [];
   if (apaNames.length) {
-    authors = apaNames.map((m) => `${m[1]}, ${m[2].replace(/\s+/g, " ").trim().replace(/([A-Z])(?!\.)/g, "$1.")}`);
+    if (apaNames.some((m) => /[A-Z](?!\.)/.test(m[2].replace(/\s+/g, "")))) issues.push("Put a full stop after each initial, e.g. Mensah, K. A. (not Mensah, KA).");
+    authors = apaNames.map((m) => `${m[1]}, ${m[2].replace(/\s+/g, "").replace(/([A-Z])(?!\.)/g, "$1.").replace(/\.(?=[A-Z])/g, ". ")}`);
   } else {
     // Authors written as "Kofi Asante and Efua Boateng" or an organisation name
     authors = authorPart.split(/,\s*|\s+(?:&|and)\s+/).map((a) => a.trim()).filter(Boolean).map((a) => {
@@ -84,9 +85,12 @@ export function toApa(raw: string): { apa: string; issues: string[]; surnames: s
     });
   }
   authors = [...new Set(authors)].filter((a) => a.length > 1);
-  if (/et al/i.test(ym ? r.slice(0, ym.index) : r)) issues.push("Don't use \"et al.\" in the reference list. List up to 20 authors.");
+  const etAl = /et al/i.test(ym ? r.slice(0, ym.index) : r);
+  if (etAl) issues.push("Don't use \"et al.\" in the reference list. List up to 20 authors.");
+  if (apaNames.length > 1 && /\s+and\s+[A-Z]/.test(authorPart)) issues.push("Use \"&\" before the last author, not \"and\".");
   const surnames = authors.map((a) => a.split(",")[0].trim());
-  const authorStr = authors.length <= 1 ? authors[0] || "" : authors.length === 2 ? `${authors[0]}, & ${authors[1]}` : authors.slice(0, -1).join(", ") + ", & " + authors[authors.length - 1];
+  let authorStr = authors.length <= 1 ? authors[0] || "" : authors.length === 2 ? `${authors[0]}, & ${authors[1]}` : authors.slice(0, -1).join(", ") + ", & " + authors[authors.length - 1];
+  if (etAl) authorStr += ", [add the other authors]";
   // Title = up to the first full stop; source = the rest
   const tm = rest.match(/^(.+?[.?!])\s+(.*)$/);
   const title = tm ? tm[1].replace(/[.]$/, "") : rest.replace(/[.]$/, "");
@@ -95,7 +99,9 @@ export function toApa(raw: string): { apa: string; issues: string[]; surnames: s
   if (title.split(" ").filter((w) => /^[A-Z]/.test(w)).length > 3 && st !== title) issues.push("Use sentence case for article and book titles.");
   if (!source) issues.push("Missing the journal, publisher or website.");
   if (/https?:\/\/(dx\.)?doi\.org/i.test(r) === false && /doi:\s*10\./i.test(r)) issues.push("Write DOIs as links: https://doi.org/…");
-  const apa = `${authorStr} (${year || "n.d."}). ${st}.${source ? " " + source.replace(/doi:\s*(10\.\S+)/i, "https://doi.org/$1") : ""}`.replace(/\.\./g, ".").trim();
+  if (source && !/[.)]$|https?:\/\/\S+$/.test(source.trim())) issues.push("End the reference with a full stop.");
+  const src = source ? source.trim().replace(/doi:\s*(10\.\S+)/i, "https://doi.org/$1") : "";
+  const apa = `${authorStr} (${year || "n.d."}). ${st}.${src ? " " + (/[.)]$|https?:\/\/\S+$/.test(src) ? src : src + ".") : ""}`.replace(/\.\./g, ".").trim();
   return { apa, issues: [...new Set(issues)], surnames, year: year ? year.slice(0, 4) : null };
 }
 
@@ -109,7 +115,19 @@ export function checkReferences(text: string): RefReport {
   let matched = 0;
   for (const c of cites) {
     const hit = entries.find((e) => e.year === c.year && e.surnames.some((s) => s.toLowerCase() === c.surname.toLowerCase()));
-    if (hit) { hit.cited = true; matched++; } else missing.push(c);
+    if (hit) { hit.cited = true; matched++; continue; }
+    // Same author with a different year in the list? Probably a typo in one of them.
+    const same = (s: string) => s.toLowerCase() === c.surname.toLowerCase();
+    const near = entries.find((e) => e.surnames[0] && same(e.surnames[0]));
+    missing.push(near ? { ...c, hint: `Your list has ${c.surname} (${near.year || "no year"}). If it's the same source, make the years match.` } : c);
+  }
+  // Organisations as authors, e.g. (Ghana Statistical Service, 2021)
+  const flat = body.replace(/\s+/g, " ");
+  for (const e of entries) {
+    const org = (e.surnames[0] || "").replace(/\.$/, "");
+    if (e.cited || !org || !/\s/.test(org) || !e.year) continue;
+    const esc = org.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (new RegExp(`${esc}\\s*(?:,\\s*|\\()${e.year}`, "i").test(flat)) { e.cited = true; matched++; }
   }
   const firstSurnames = entries.map((e) => (e.surnames[0] || e.raw).toLowerCase());
   const orderOk = firstSurnames.every((s, i) => i === 0 || firstSurnames[i - 1].localeCompare(s) <= 0);

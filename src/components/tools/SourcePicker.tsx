@@ -55,6 +55,14 @@ export default function SourcePicker({ tool, papers, steps, cta, onResult }: {
             : <><b>Tap to choose a PDF</b><p className="small muted">or drag it here. Your draft stays private.</p></>}
         </label>
         <button type="button" className="btn primary" disabled={!file} onClick={() => run()}>{cta}</button>
+        {!file && (
+          <p className="small muted" style={{ textAlign: "center" }}>No paper to hand?{" "}
+            <button type="button" className="linkbtn" onClick={async () => {
+              try { const r = await fetch("/samples/papr-sample-paper.pdf"); take(new File([await r.blob()], "papr-sample-paper.pdf", { type: "application/pdf" })); }
+              catch { setError("Couldn't load the sample. Check your connection."); }
+            }}>Try it with a sample paper</button>
+          </p>
+        )}
       </div>
       <div className="card pad-lg stack">
         <h3>Or use a paper on papr</h3>

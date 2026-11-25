@@ -20,7 +20,7 @@ export default function ReferencesTool({ papers }: { papers: { id: string; title
       {r.stats.references === 0 && <div className="notice gold">We couldn&apos;t find a reference list. Make sure it starts with a heading called <b>References</b>.</div>}
       {r.missingFromList.length > 0 && (
         <section className="card stack"><h3 className="ih"><Icon name="bad" size={18} /> Cited in your text, missing from your reference list</h3>
-          {r.missingFromList.map((c, i) => <div key={i} className="issue-row"><b>{c.surname} ({c.year})</b><span className="small muted">cited {c.count}× as {c.raw}. Add the full reference.</span></div>)}</section>
+          {r.missingFromList.map((c, i) => <div key={i} className="issue-row"><b>{c.surname} ({c.year})</b><span className="small muted">cited {c.count}× as {c.raw}. {c.hint || "Add the full reference."}</span></div>)}</section>
       )}
       {r.uncited.length > 0 && (
         <section className="card stack"><h3 className="ih"><Icon name="warn" size={18} /> In your reference list, but never cited</h3>
