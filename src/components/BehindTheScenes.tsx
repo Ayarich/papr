@@ -9,10 +9,3 @@ export default function BehindTheScenes({ points, children }: { points: React.Re
     </details>
   );
 }
-
-
-
-
-
-
-

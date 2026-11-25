@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sha256, startSession, isStudentEmail } from "@/lib/auth";
 import { one, run, newId, nowIso, type User } from "@/lib/db";
 import { testLogin } from "@/lib/test-logins";
+import { logActivity } from "@/lib/activity";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
 
   // First login creates a student account.
   let user = await one<User>("SELECT * FROM users WHERE email = ?", [email]);
+  const isNew = !user;
   if (!user) {
     const guess = email.split("@")[0].split(/[._-]/).filter((w) => /^[a-z]+$/i.test(w)).map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
     await run("INSERT INTO users (id, email, name, role, created_at) VALUES (?,?,?,?,?)", [newId(), email, testLogin(email) ? `Test ${testLogin(email)!.role[0].toUpperCase()}${testLogin(email)!.role.slice(1)}` : guess, testLogin(email)?.role ?? (isStudentEmail(email) ? "student" : "reader"), nowIso()]);
@@ -33,6 +35,7 @@ export async function POST(req: Request) {
     await run("UPDATE users SET role = 'admin' WHERE id = ?", [user!.id]);
     user = await one<User>("SELECT * FROM users WHERE id = ?", [user!.id]);
   }
+  await logActivity(isNew ? "signup" : "login", `${user!.role}${testLogin(email) ? " (test account)" : ""}`, user!.id);
   await startSession(user!.id);
   const home = user!.role === "student" ? "/my" : user!.role === "reader" ? "/" : user!.role === "lecturer" ? "/collections" : "/moderate";
   return NextResponse.json({ ok: true, home });

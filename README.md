@@ -226,5 +226,3 @@ Open the address it prints, log in with your `ADMIN_EMAILS` address, and you are
 | `npm run make-moderator -- email "Name"` | Give an account moderator rights |
 | `npm run build` | Check and build for production |
 | `npm run start` | Run the production build |
-#   p a p r  
- 

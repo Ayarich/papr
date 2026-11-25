@@ -7,6 +7,7 @@ import { buildOutline } from "@/lib/deck";
 import { aiOutline } from "@/lib/ai-outline";
 import { ensureDecks, pdfText } from "@/lib/decks";
 import { APP_URL } from "@/lib/mail";
+import { logActivity } from "@/lib/activity";
 
 // Turns a PDF (uploaded now, or one of the student's papr submissions) into a slide deck.
 export async function POST(req: Request) {
@@ -61,6 +62,7 @@ export async function POST(req: Request) {
   const now = nowIso();
   await run("INSERT INTO decks (id, owner_id, submission_id, title, data, created_at, updated_at) VALUES (?,?,?,?,?,?,?)",
     [id, user.id, subId, deck.title.slice(0, 200), JSON.stringify(deck), now, now]);
+  await logActivity("deck", deck.title, user.id);
   return NextResponse.json({ ok: true, id });
 }
 

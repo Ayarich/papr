@@ -25,6 +25,9 @@
 --@column opportunities live INTEGER NOT NULL DEFAULT 0
 --@column opportunities hidden INTEGER NOT NULL DEFAULT 0
 --@column opportunities published_at TEXT
+--@column emails status TEXT
+--@column emails provider TEXT
+--@column emails error TEXT
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_users_handle ON users(handle);
 CREATE INDEX IF NOT EXISTS idx_submissions_collection ON submissions(collection_id);
@@ -183,3 +186,15 @@ CREATE TABLE IF NOT EXISTS app_state (
   key   TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+
+-- Activity log for the admin dashboard: logins, sign-ups, tool use, submissions and server errors.
+CREATE TABLE IF NOT EXISTS activity (
+  id         TEXT PRIMARY KEY,
+  kind       TEXT NOT NULL,   -- login | signup | tool | deck | submit | error | cron
+  user_id    TEXT,
+  detail     TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_activity_time ON activity(created_at);
+CREATE INDEX IF NOT EXISTS idx_activity_kind ON activity(kind, created_at);
+CREATE INDEX IF NOT EXISTS idx_emails_time ON emails(created_at);

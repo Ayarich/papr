@@ -9,6 +9,7 @@ import { indexVersion } from "@/lib/plagiarism";
 import { activeCampaign } from "@/lib/campaigns";
 import { notify } from "@/lib/notify";
 import { collectionFor } from "@/app/collections/actions";
+import { logActivity } from "@/lib/activity";
 
 // Creates a new submission (version 1) from the form + PDF.
 export async function POST(req: Request) {
@@ -63,6 +64,7 @@ export async function POST(req: Request) {
   const sub = (await one<Submission>("SELECT * FROM submissions WHERE id = ?", [id]))!;
   await notifyAfterSubmit(sub, user.email, d, false);
   if (coll) await notify(coll.owner_id, { kind: "collection", text: `📥 ${d.name} uploaded to “${coll.title}”`, link: `/collections/${coll.id}`, group: `coll-${coll.id}` });
+  await logActivity("submit", ref, user.id);
   return NextResponse.json({ ok: true, ref, id });
 }
 

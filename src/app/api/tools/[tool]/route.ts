@@ -11,6 +11,7 @@ import { externalCheck, providerName } from "@/lib/plagiarism-providers";
 import { defenceQuestions } from "@/lib/defence";
 import { posterContent } from "@/lib/poster-content";
 import { APP_URL } from "@/lib/mail";
+import { logActivity } from "@/lib/activity";
 
 const TOOLS = ["references", "precheck", "poster", "defence"];
 
@@ -53,6 +54,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ tool: s
   };
   const base = { fromPaper: !!sub, published: sub?.status === "published" };
 
+  await logActivity("tool", tool, user?.id);
   if (tool === "references") return NextResponse.json({ ...base, report: checkReferences(text) });
   if (tool === "defence") return NextResponse.json({ ...base, questions: defenceQuestions(text, { title: sub?.title }) });
   if (tool === "poster") return NextResponse.json({ ...base, poster: posterContent(text, meta) });

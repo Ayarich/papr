@@ -76,7 +76,7 @@ const PAPERS = [
   { status: "changes", owner: "ama", title: "Assessment of Road Surface Defects Along the Tarkwa-Takoradi Highway", abstract: "Road defects increase travel time and vehicle costs. This study surveyed potholes, cracks and rutting along a 40 km section of the highway.", keywords: "roads, pavement, survey", field: "Engineering & Technology", type: "Seminar / term paper", year: "2026", institution: "University of Mines and Technology (UMaT)", programme: "BSc Geomatic Engineering", authors: ["Ama Mensah"], sup: "Dr. J. K. Annan", supEmail: "jkannan@umat.edu.gh", date: "2026-11-10", note: "Thank you for submitting. Please expand your abstract to describe your method and main results (at least 120 words), and add a few more keywords so other students can find your work." },
 ];
 
-const TABLES = ["app_state", "feed_sources", "contact_requests", "awards", "campaigns", "read_events", "notifications", "follows", "opportunities", "topic_saves", "topic_ideas", "collections", "fingerprints", "decks", "events", "reviews", "authors", "versions", "submissions", "sessions", "login_codes", "emails", "users"];
+const TABLES = ["activity", "app_state", "feed_sources", "contact_requests", "awards", "campaigns", "read_events", "notifications", "follows", "opportunities", "topic_saves", "topic_ideas", "collections", "fingerprints", "decks", "events", "reviews", "authors", "versions", "submissions", "sessions", "login_codes", "emails", "users"];
 
 async function main() {
   const reset = process.argv.includes("--reset");

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cronAllowed } from "@/lib/cron";
+import { noteCron } from "@/lib/activity";
 import { sendDigests } from "@/lib/follows";
 
 export const dynamic = "force-dynamic";
@@ -9,5 +10,6 @@ export const maxDuration = 300;
 export async function GET(req: Request) {
   if (!cronAllowed(req)) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
   const sent = await sendDigests();
+  await noteCron("digest", `${sent} digests sent`);
   return NextResponse.json({ ok: true, sent });
 }
