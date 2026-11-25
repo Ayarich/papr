@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { LAYOUTS, THEMES, newSlide, sid, type Deck, type Layout, type Slide, type ThemeKey } from "@/lib/deck";
 import { downloadPptx } from "@/lib/pptx";
 import { Scaled, SlideView } from "./SlideView";
+import Icon from "@/components/Icon";
 
 type SaveState = "saved" | "saving" | "error";
 
@@ -85,7 +86,7 @@ export default function DeckEditor({ id, initial }: { id: string; initial: Deck 
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </Link>
         <input className="ed-title" aria-label="Deck title" value={deck.title} onChange={(e) => setDeck({ ...deck, title: e.target.value })} />
-        <span className={`ed-save ${save}`}>{save === "saved" ? "✓ Saved" : save === "saving" ? "Saving…" : "Not saved. Check your connection."}</span>
+        <span className={`ed-save ${save}`}>{save === "saved" ? <><Icon name="check" size={14} /> Saved</> : save === "saving" ? "Saving…" : "Not saved. Check your connection."}</span>
         <div className="ed-actions">
           <button type="button" className="btn sm" onClick={() => setPresenting(true)}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor" /></svg> Present

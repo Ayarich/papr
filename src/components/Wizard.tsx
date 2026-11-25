@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FIELDS, INSTITUTIONS, LEVELS, TYPES, YEARS, MAX_PDF_BYTES, shortInst } from "@/lib/constants";
 import { emptyDraft, validateStep, words, ABSTRACT_MIN, ABSTRACT_MAX, type DraftData, type Errors } from "@/lib/validate";
 import { fmtSize } from "@/lib/format";
+import Icon from "@/components/Icon";
 
 const STEPS = ["About you", "Your research", "People", "Upload PDF", "Licence", "Review"];
 
@@ -150,7 +151,7 @@ export default function Wizard(props: Props) {
       <p className="mstep">Step {step + 1} of 6 · {STEPS[step]}</p>
 
       {props.collection && (
-        <div className="notice ok" style={{ marginBottom: 16 }}>📚 Submitting to <b>{props.collection.title}</b>, curated by {props.collection.owner}. They&apos;ll see your upload and can confirm your work.</div>
+        <div className="notice ok" style={{ marginBottom: 16 }}><Icon name="book" size={16} /> Submitting to <b>{props.collection.title}</b>, curated by {props.collection.owner}. They&apos;ll see your upload and can confirm your work.</div>
       )}
       {props.moderatorNote && (
         <div className="comment" style={{ marginBottom: 16 }}><b>Moderator&apos;s note</b><p style={{ marginTop: 4 }}>{props.moderatorNote}</p></div>
@@ -164,7 +165,7 @@ export default function Wizard(props: Props) {
           {step === 0 && (
             <div className="stack">
               <div><h2>About you</h2><p className="muted" style={{ marginTop: 4 }}>This appears on your paper.</p></div>
-              <div className="notice ok small">✓ Logged in as <b>{props.email}</b></div>
+              <div className="notice ok small"><Icon name="check" size={14} /> Logged in as <b>{props.email}</b></div>
               <div className="grid g2">
                 <div className="field"><label className="lbl" htmlFor="name">Full name</label><input type="text" id="name" value={d.name} onChange={(e) => set("name", e.target.value)} autoComplete="name" {...inv("name")} />{E("name")}<p className="hint">As it should appear on the paper.</p></div>
                 <div className="field"><label className="lbl" htmlFor="level">Level</label><select id="level" value={d.level} onChange={(e) => set("level", e.target.value)}>{LEVELS.map((l) => <option key={l}>{l}</option>)}</select></div>

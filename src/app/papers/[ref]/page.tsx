@@ -12,6 +12,7 @@ import { all, one, run, type Submission, type Version } from "@/lib/db";
 import { apa, fmtDate, fmtSize, splitList } from "@/lib/format";
 import { APP_URL } from "@/lib/mail";
 import CopyButton from "@/components/CopyButton";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 
@@ -83,9 +84,9 @@ export default async function PaperPage({ params }: { params: Promise<{ ref: str
               <span className="tag">{p.field}</span>
               <span className="tag plain">{p.type}</span>
               <span className="npr" title="Checked by a moderator but not peer-reviewed">Not peer-reviewed</span>
-              {p.supervisor_confirmed_at && <span className="okbadge">✓ Supervisor confirmed</span>}
-              {award && <span className="award">🏆 Paper of the Month · {monthName(award.month)}</span>}
-              {campaign && <span className="tag plain">🔥 {campaign.badge}</span>}
+              {p.supervisor_confirmed_at && <span className="okbadge"><Icon name="verified" size={13} /> Supervisor confirmed</span>}
+              {award && <span className="award"><Icon name="trophy" size={14} /> Paper of the Month · {monthName(award.month)}</span>}
+              {campaign && <span className="tag plain"><Icon name="flame" size={14} /> {campaign.badge}</span>}
               {p.imported && !p.claimed_at ? <span className="tag plain">Added by the department</span> : null}
             </div>
             <h1>{p.title}</h1>
@@ -107,12 +108,12 @@ export default async function PaperPage({ params }: { params: Promise<{ ref: str
           </section>
           {ideas.length > 0 && (
             <section className="stack" style={{ gap: 10 }}>
-              <h3>💡 Research ideas from this paper</h3>
+              <h3 className="ih"><Icon name="idea" size={18} /> Research ideas from this paper</h3>
               <p className="small muted">Looking for a final-year project topic? These come from the author&apos;s recommendations.</p>
               {ideas.map((i) => (
                 <div key={i.id} className="idea-row">
                   <span className="grow">{i.text}</span>
-                  <form action={toggleSaveIdea}><input type="hidden" name="id" value={i.id} /><input type="hidden" name="back" value={back} /><button className={`btn sm ${i.mine ? "" : "outline"}`} type="submit">{i.mine ? "✓ Saved" : "Save"}</button></form>
+                  <form action={toggleSaveIdea}><input type="hidden" name="id" value={i.id} /><input type="hidden" name="back" value={back} /><button className={`btn sm ${i.mine ? "" : "outline"}`} type="submit">{i.mine ? <><Icon name="check" size={14} /> Saved</> : "Save"}</button></form>
                 </div>
               ))}
             </section>

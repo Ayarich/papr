@@ -5,6 +5,7 @@ import { blobEnabled } from "@/lib/storage";
 import AdminNav from "./AdminNav";
 import AutoRefresh from "@/components/AutoRefresh";
 import MiniBars from "@/components/MiniBars";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Admin dashboard" };
@@ -20,7 +21,7 @@ const maskEmail = (e: string) => e.replace(/^(.{2})[^@]*(@.*)$/, "$1•••$2"
 const maskCodes = (s: string) => s.replace(/\b\d{6}\b/g, "••••••");
 
 type Level = "ok" | "warn" | "bad";
-const ICON: Record<Level, string> = { ok: "✅", warn: "⚠️", bad: "⛔" };
+const ICON: Record<Level, "ok" | "warn" | "bad"> = { ok: "ok", warn: "warn", bad: "bad" };
 
 export default async function AdminDashboard() {
   await requireModerator();
@@ -127,7 +128,7 @@ export default async function AdminDashboard() {
       <section className="health" aria-label="System health">
         {health.map((h) => (
           <div key={h.label} className={`hcard ${h.level}`}>
-            <span className="small muted">{ICON[h.level]} {h.label}</span>
+            <span className="small muted ih"><Icon name={ICON[h.level]} size={15} className={`lv-${h.level}`} /> {h.label}</span>
             <b>{h.value}</b>
             {h.note && <span className="small muted">{h.note}</span>}
           </div>
@@ -173,7 +174,7 @@ export default async function AdminDashboard() {
         {errors.length ? (
           <div className="tblwrap"><table className="tbl"><thead><tr><th>When</th><th>What happened</th></tr></thead>
             <tbody>{errors.map((e, k) => <tr key={k}><td className="small nowrap">{ago(e.created_at)}</td><td className="small mono">{e.detail}</td></tr>)}</tbody></table></div>
-        ) : <p className="small muted">✅ No server errors recorded.</p>}
+        ) : <p className="small muted ih"><Icon name="ok" size={15} className="lv-ok" /> No server errors recorded.</p>}
       </section>
 
       <section className="card">
@@ -185,7 +186,7 @@ export default async function AdminDashboard() {
               <td className="small">{maskEmail(e.to)}</td>
               <td className="small">{maskCodes(e.subject)}</td>
               <td className="small">
-                <span className={`pill ${e.status === "sent" ? "published" : e.status === "failed" || e.status === "not_sent" ? "rejected" : "pending"}`}>{e.status === "sent" ? "✓ Sent" : e.status === "failed" ? "✕ Failed" : e.status === "not_sent" ? "Not sent" : e.status || "Saved"}</span>
+                <span className={`pill ${e.status === "sent" ? "published" : e.status === "failed" || e.status === "not_sent" ? "rejected" : "pending"}`}>{e.status === "sent" ? "Sent" : e.status === "failed" ? "Failed" : e.status === "not_sent" ? "Not sent" : e.status || "Saved"}</span>
                 {e.provider && e.provider !== "none" && <span className="muted"> via {e.provider}</span>}
                 {e.error && <div className="muted mono" style={{ marginTop: 4 }}>{e.error}</div>}
               </td>
@@ -197,7 +198,7 @@ export default async function AdminDashboard() {
           <h3 className="dash-h">Recent activity</h3>
           {recent.length ? (
             <ul className="feedlist">{recent.map((a, k) => (
-              <li key={k}><span aria-hidden>{({ login: "🔑", signup: "🎉", tool: "🧰", deck: "🖥️", submit: "📄", cron: "⏱️" } as Record<string, string>)[a.kind] || "•"}</span>
+              <li key={k}><Icon name={({ login: "key", signup: "party", tool: "tool", deck: "slides", submit: "file", cron: "clock" } as Record<string, "key" | "party" | "tool" | "slides" | "file" | "clock">)[a.kind] || "info"} size={15} />
                 <span className="small"><b>{a.kind === "signup" ? "New user" : a.kind === "tool" ? `Used ${a.detail}` : a.kind === "deck" ? "Made slides" : a.kind === "submit" ? `Submitted ${a.detail}` : a.kind === "cron" ? a.detail : "Logged in"}</b>
                   {a.email && <span className="muted"> · {maskEmail(a.email)}</span>}{a.kind === "signup" || a.kind === "login" ? <span className="muted"> · {a.detail}</span> : null}</span>
                 <span className="small muted nowrap" style={{ marginLeft: "auto" }}>{ago(a.created_at)}</span></li>
@@ -208,7 +209,7 @@ export default async function AdminDashboard() {
           <h3 className="dash-h">Live opportunity feeds</h3>
           {feeds.length ? (
             <table className="tbl"><tbody>{feeds.map((f) => (
-              <tr key={f.name}><td className="small">{!f.enabled ? "⏸️" : f.last_ok === 0 ? "⚠️" : "✅"} {f.name}</td>
+              <tr key={f.name}><td className="small ih">{!f.enabled ? <Icon name="pause" size={14} /> : f.last_ok === 0 ? <Icon name="warn" size={14} className="lv-warn" /> : <Icon name="ok" size={14} className="lv-ok" />} {f.name}</td>
                 <td className="small muted">{f.last_ok === 0 ? f.last_error : `${f.last_count ?? 0} items · ${ago(f.last_fetched_at)}`}</td></tr>))}</tbody></table>
           ) : <p className="small muted">Feeds load the first time someone opens Opportunities.</p>}
           <p className="small muted" style={{ marginTop: 10 }}>Weekly digest: {cd ? `${cd.result}, ${ago(cd.at)}` : "hasn't run yet (Mondays 07:00 UTC)"}. <Link href="/admin/opportunities">Manage feeds</Link></p>

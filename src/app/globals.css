@@ -756,3 +756,22 @@ a.notif:hover { background: var(--subtle); }
 .nowrap { white-space: nowrap; }
 .mono { font-family: var(--mono); font-size: .8rem; word-break: break-word; }
 @media (max-width: 960px) { .dash-cols, .dash-cols.two { grid-template-columns: 1fr; } }
+
+/* Icons (Lucide) */
+.ic { display: inline-block; vertical-align: -0.18em; flex: none; }
+.btn .ic, .tag .ic, .badge .ic, .okbadge .ic, .award .ic { vertical-align: -0.15em; }
+.ih { display: inline-flex; align-items: center; gap: 7px; }
+h3.ih { display: flex; gap: 8px; }
+.lv-ok { color: var(--ok); } .lv-warn { color: var(--warn); } .lv-bad { color: var(--bad); }
+.toolcard .emo { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; background: var(--subtle); border: 1px solid var(--line); color: var(--ink); font-size: 1rem; }
+.toolcard:hover .emo { transform: translateY(-2px) rotate(-4deg); background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.toolgrid.compact .toolcard .emo { width: 40px; height: 40px; border-radius: 11px; font-size: 1rem; }
+.opp-emoji { color: var(--ink); font-size: 1rem; }
+.potm .trophy { width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; background: var(--gold-soft); color: var(--gold); font-size: 1rem; flex: none; }
+.fact-ic { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--subtle); color: var(--ink); margin-bottom: 6px; }
+.fact > span.fact-ic { font-size: 1rem; }
+.notif-ic { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--subtle); color: var(--ink); flex: none; }
+.pav { color: var(--ink); }
+.mini-idea .ic { color: var(--gold); }
+.flame .ic { color: #FF8A3D; }
+.notif { align-items: center; }

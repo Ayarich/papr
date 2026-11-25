@@ -4,6 +4,7 @@ import { shortInst } from "@/lib/constants";
 import { monthName } from "@/lib/badges";
 import AdminNav from "../AdminNav";
 import { giveAward } from "../actions";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Paper of the Month" };
@@ -24,8 +25,8 @@ export default async function Awards({ searchParams }: { searchParams: Promise<{
   return (
     <div className="stack" style={{ gap: 24 }}>
       <AdminNav active="awards" />
-      <div><h1>Paper of the Month</h1><p className="muted" style={{ marginTop: 8 }}>Pick a winner for {monthName(month)}. They get a 🏆 badge, a spotlight on the home page and a notification. Data bundles make great prizes, and a telco may sponsor them.</p></div>
-      {current && <div className="notice ok">🏆 Winner for {monthName(month)}: <a href={`/papers/${current.ref}`}>{current.title}</a> · {current.prize}{current.sponsor ? ` (sponsored by ${current.sponsor})` : ""}</div>}
+      <div><h1>Paper of the Month</h1><p className="muted" style={{ marginTop: 8 }}>Pick a winner for {monthName(month)}. They get a Paper of the Month badge, a spotlight on the home page and a notification. Data bundles make great prizes, and a telco may sponsor them.</p></div>
+      {current && <div className="notice ok ih"><Icon name="trophy" size={16} /> Winner for {monthName(month)}: <a href={`/papers/${current.ref}`}>{current.title}</a> · {current.prize}{current.sponsor ? ` (sponsored by ${current.sponsor})` : ""}</div>}
       <form action={giveAward} className="card pad-lg stack">
         <input type="hidden" name="month" value={month} />
         <h3>Nominees, ranked by reads in {monthName(month)}</h3>
@@ -33,7 +34,7 @@ export default async function Awards({ searchParams }: { searchParams: Promise<{
           {nominees.map((n, i) => (
             <label key={n.id} className="check" htmlFor={`nom-${n.id}`}>
               <input type="radio" id={`nom-${n.id}`} name="submissionId" value={n.id} defaultChecked={i === 0} />
-              <span><b>{n.title}</b><br /><span className="small muted">{n.authors_text} · {shortInst(n.institution)} · {n.reads} reads this month · {n.downloads} downloads{n.confirmed ? " · ✅ supervisor confirmed" : ""}</span></span>
+              <span><b>{n.title}</b><br /><span className="small muted">{n.authors_text} · {shortInst(n.institution)} · {n.reads} reads this month · {n.downloads} downloads{n.confirmed ? " · supervisor confirmed" : ""}</span></span>
             </label>
           ))}
         </div>
@@ -44,7 +45,7 @@ export default async function Awards({ searchParams }: { searchParams: Promise<{
         </div>
         <div><button className="btn primary" type="submit">Award Paper of the Month</button></div>
       </form>
-      {past.length > 0 && <section className="stack"><h2>Past winners</h2>{past.map((p) => <div key={p.id} className="small">🏆 <b>{monthName(p.month)}</b>: <a href={`/papers/${p.ref}`}>{p.title}</a> · {p.prize}</div>)}</section>}
+      {past.length > 0 && <section className="stack"><h2>Past winners</h2>{past.map((p) => <div key={p.id} className="small ih"><Icon name="trophy" size={14} /> <b>{monthName(p.month)}</b>: <a href={`/papers/${p.ref}`}>{p.title}</a> · {p.prize}</div>)}</section>}
     </div>
   );
 }

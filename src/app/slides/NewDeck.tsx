@@ -2,6 +2,7 @@
 import { attachPdf } from "@/lib/upload-client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Icon from "@/components/Icon";
 
 const STEPS = ["Reading your paper…", "Finding the key points…", "Writing your bullets…", "Designing your slides…"];
 
@@ -63,7 +64,7 @@ export default function NewDeck({ papers, preselect }: { papers: { id: string; t
           {file ? <><b style={{ overflowWrap: "anywhere" }}>{file.name}</b><p className="small muted">Ready. Tap to choose a different file.</p></>
             : <><b>Tap to choose a PDF</b><p className="small muted">or drag it here. Your project, thesis or paper.</p></>}
         </label>
-        <button type="button" className="btn primary" disabled={!file} onClick={() => make()}>Make my slides ✨</button>
+        <button type="button" className="btn primary" disabled={!file} onClick={() => make()}><Icon name="sparkles" size={16} /> Make my slides</button>
       </div>
       <div className="card pad-lg stack">
         <h3>Or use a paper on papr</h3>

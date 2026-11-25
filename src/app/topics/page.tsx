@@ -4,6 +4,7 @@ import { all } from "@/lib/db";
 import { FIELDS, shortInst } from "@/lib/constants";
 import { ensureIndexed } from "@/lib/indexer";
 import { toggleSaveIdea } from "@/app/social-actions";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Topic finder" };
@@ -36,7 +37,7 @@ export default async function Topics({ searchParams }: { searchParams: Promise<{
         <button className="btn primary" type="submit">Search</button>
       </form>
       <div className="row between"><span className="small muted num">{ideas.length} idea{ideas.length === 1 ? "" : "s"}</span>
-        {user && <Link className={`tag ${sp.saved ? "" : "plain"}`} href={sp.saved ? "/topics" : "/topics?saved=1"}>💾 My saved ideas</Link>}</div>
+        {user && <Link className={`tag ${sp.saved ? "" : "plain"}`} href={sp.saved ? "/topics" : "/topics?saved=1"}><Icon name="idea" size={14} /> My saved ideas</Link>}</div>
       <div className="ideagrid stagger">
         {ideas.map((i) => (
           <div key={i.id} className="card idea">
@@ -46,7 +47,7 @@ export default async function Topics({ searchParams }: { searchParams: Promise<{
             <div className="row between">
               <span className="small muted num">{i.saves ? `${i.saves} saved` : "Be the first to save"}</span>
               <form action={toggleSaveIdea}><input type="hidden" name="id" value={i.id} /><input type="hidden" name="back" value={back} />
-                <button className={`btn sm ${i.mine ? "" : "outline"}`} type="submit">{i.mine ? "✓ Saved" : "Save idea"}</button></form>
+                <button className={`btn sm ${i.mine ? "" : "outline"}`} type="submit">{i.mine ? <><Icon name="check" size={14} /> Saved</> : "Save idea"}</button></form>
             </div>
           </div>
         ))}

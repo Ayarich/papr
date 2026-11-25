@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { FIELDS } from "@/lib/constants";
 import { badgesFor } from "@/lib/badges";
 import { updateProfile } from "@/app/social-actions";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "My profile" };
@@ -18,7 +19,7 @@ export default async function ProfileEdit({ searchParams }: { searchParams: Prom
       <div className="row between"><h1>My profile</h1>{user.handle && <Link className="btn sm" href={`/u/${user.handle}`}>View public profile →</Link>}</div>
       {sp.saved && <div className="notice ok">Saved.{user.handle ? <> Your public profile is <Link href={`/u/${user.handle}`}>/u/{user.handle}</Link>.</> : null}</div>}
       {sp.error === "handle" && <div className="notice bad">That profile address is taken. Try another.</div>}
-      {badges.length > 0 && <div className="badges">{badges.map((b) => <span key={b.key} className="badge" title={b.desc}>{b.emoji} {b.label}</span>)}</div>}
+      {badges.length > 0 && <div className="badges">{badges.map((b) => <span key={b.key} className="badge" title={b.desc}><Icon name={b.icon} size={15} /> {b.label}</span>)}</div>}
       <form action={updateProfile} className="card pad-lg stack">
         <div className="grid g2">
           <div className="field"><label className="lbl" htmlFor="p-name">Name</label><input type="text" id="p-name" name="name" defaultValue={user.name} /></div>

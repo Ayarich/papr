@@ -7,6 +7,7 @@ import { isFollowing } from "@/lib/follows";
 import PaperCard from "@/components/PaperCard";
 import FollowButton from "@/components/FollowButton";
 import { requestContact } from "@/app/social-actions";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,7 @@ export default async function PublicProfile({ params, searchParams }: { params: 
         <div className="card stat"><b className="num">{(stats?.downloads || 0).toLocaleString()}</b><span>downloads</span></div>
         <div className="card stat"><b className="num">{papers.length}</b><span>published paper{papers.length === 1 ? "" : "s"}</span></div>
       </div>
-      {badges.length > 0 && <section className="stack"><h2>Badges</h2><div className="badges">{badges.map((b) => <span key={b.key} className="badge" title={b.desc}>{b.emoji} {b.label}</span>)}</div></section>}
+      {badges.length > 0 && <section className="stack"><h2>Badges</h2><div className="badges">{badges.map((b) => <span key={b.key} className="badge" title={b.desc}><Icon name={b.icon} size={15} /> {b.label}</span>)}</div></section>}
       {u.bio && <section className="stack"><h2>About</h2><p style={{ maxWidth: "65ch" }}>{u.bio}</p></section>}
       {u.skills && <section className="stack"><h2>Skills</h2><div className="chips">{u.skills.split(",").map((s) => <span key={s} className="tag plain">{s.trim()}</span>)}</div></section>}
       <section className="stack"><h2>Research</h2>{papers.length ? <div className="grid g2">{papers.map((p) => <PaperCard key={p.id} p={p} />)}</div> : <p className="muted">No published papers yet.</p>}</section>

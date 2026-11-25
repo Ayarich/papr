@@ -8,6 +8,7 @@ const today = () => new Date().toISOString().slice(0, 10);
  */
 export async function notify(userId: string | null | undefined, n: { kind: string; text: string; link?: string; ref?: string; group?: string }) {
   if (!userId) return;
+  n = { ...n, text: stripEmoji(n.text) }; // papr shows icons, not emojis
   if (n.group) {
     const ex = await one<{ id: string }>("SELECT id FROM notifications WHERE user_id = ? AND kind = ? AND ref = ? AND day = ? AND read_at IS NULL", [userId, n.kind, n.group, today()]);
     if (ex) {
@@ -59,4 +60,9 @@ export async function recordRead(sub: { id: string; ref: string; owner_id: strin
     if ([25, 100, 250, 500, 1000, 2500, 5000, 10000].includes(views))
       await notify(sub.owner_id, { kind: "milestone", text: `🎉 “${short}” just passed ${views.toLocaleString()} views`, link: `/papers/${sub.ref}` });
   }
+}
+
+/** Removes a leading emoji (old notification texts started with one). */
+export function stripEmoji(t: string) {
+  return t.replace(/^(?:\p{Extended_Pictographic}|\p{Regional_Indicator})[\uFE0F\u200D\p{Extended_Pictographic}]*\s*/u, "");
 }

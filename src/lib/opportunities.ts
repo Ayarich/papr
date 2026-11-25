@@ -1,12 +1,14 @@
-export const OPP_TYPES = [
-  { key: "internship", label: "Internship", emoji: "💼" },
-  { key: "national-service", label: "National service", emoji: "🇬🇭" },
-  { key: "masters", label: "Master's", emoji: "🎓" },
-  { key: "phd", label: "PhD", emoji: "🔬" },
-  { key: "scholarship", label: "Scholarship", emoji: "💰" },
-  { key: "grad-school", label: "Grad school", emoji: "🏛️" },
-  { key: "conference", label: "Conference", emoji: "🎤" },
-  { key: "job", label: "Job", emoji: "🧑‍💻" },
-  { key: "grant", label: "Grant / competition", emoji: "🏆" },
+import type { IconName } from "@/components/Icon";
+
+export const OPP_TYPES: { key: string; label: string; icon: IconName }[] = [
+  { key: "internship", label: "Internship", icon: "briefcase" },
+  { key: "national-service", label: "National service", icon: "flag" },
+  { key: "masters", label: "Master's", icon: "graduate" },
+  { key: "phd", label: "PhD", icon: "lab" },
+  { key: "scholarship", label: "Scholarship", icon: "money" },
+  { key: "grad-school", label: "Grad school", icon: "building" },
+  { key: "conference", label: "Conference", icon: "mic" },
+  { key: "job", label: "Job", icon: "code" },
+  { key: "grant", label: "Grant / competition", icon: "trophy" },
 ];
-export const oppType = (k: string) => OPP_TYPES.find((t) => t.key === k) || { key: k, label: k, emoji: "📌" };
+export const oppType = (k: string): { key: string; label: string; icon: IconName } => OPP_TYPES.find((t) => t.key === k) || { key: k, label: k, icon: "pin" };

@@ -4,6 +4,7 @@ import { FIELDS } from "@/lib/constants";
 import { fmtDate } from "@/lib/format";
 import ImportForm from "./ImportForm";
 import AdminNav from "../AdminNav";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Import past projects" };
@@ -30,7 +31,7 @@ export default async function ImportPage() {
       {recent.length > 0 && (
         <section className="stack"><h2>Recently imported <span className="muted small">({claimed} of {recent.length} claimed)</span></h2>
           <div className="card tblwrap" style={{ padding: 0 }}><table className="tbl"><thead><tr><th>Paper</th><th>Author email</th><th>Imported</th><th>Claimed</th></tr></thead><tbody>
-            {recent.map((r) => <tr key={r.ref}><td><a href={`/papers/${r.ref}`}>{r.ref}</a> · {r.title}</td><td className="small">{r.claim_email}</td><td className="small">{fmtDate(r.created_at)}</td><td>{r.claimed_at ? <span className="okbadge">✓ {fmtDate(r.claimed_at)}</span> : <span className="small muted">Waiting</span>}</td></tr>)}
+            {recent.map((r) => <tr key={r.ref}><td><a href={`/papers/${r.ref}`}>{r.ref}</a> · {r.title}</td><td className="small">{r.claim_email}</td><td className="small">{fmtDate(r.created_at)}</td><td>{r.claimed_at ? <span className="okbadge"><Icon name="check" size={13} /> {fmtDate(r.claimed_at)}</span> : <span className="small muted">Waiting</span>}</td></tr>)}
           </tbody></table></div>
         </section>
       )}

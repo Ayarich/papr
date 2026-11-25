@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { ABSTRACT_MAX, ABSTRACT_MIN } from "@/lib/validate";
 import { LEVELS, TYPES } from "@/lib/constants";
+import Icon, { type IconName } from "@/components/Icon";
 
 export const metadata = { title: "Author guidelines", description: "How to prepare your research for papr: what we accept, the sample article format, formatting, references and ethics." };
 
-const FACTS = [
-  ["📄", "PDF only", "Up to 20 MB, with selectable text"],
-  ["✍️", `${ABSTRACT_MIN}–${ABSTRACT_MAX} words`, "Abstract, one paragraph"],
-  ["🏷️", "3–6 keywords", "Words people would search for"],
-  ["🔍", "Under 25%", "Similarity, after quotes and references"],
-  ["👩🏾‍🏫", "Supervisor", "Confirms your work by email"],
+const FACTS: [IconName, string, string][] = [
+  ["file", "PDF only", "Up to 20 MB, with selectable text"],
+  ["write", `${ABSTRACT_MIN}–${ABSTRACT_MAX} words`, "Abstract, one paragraph"],
+  ["tags", "3–6 keywords", "Words people would search for"],
+  ["precheck", "Under 25%", "Similarity, after quotes and references"],
+  ["supervisor", "Supervisor", "Confirms your work by email"],
 ];
 
 const FORMAT: [string, string, string][] = [
@@ -35,14 +36,14 @@ export default function Guidelines() {
         <h1>Author guidelines</h1>
         <p className="muted">Everything you need to prepare your research for papr, with a sample article format you can download and fill in. Following it makes moderation quicker and your paper easier to find and cite.</p>
         <div className="row" style={{ marginTop: 18, flexWrap: "wrap" }}>
-          <a className="btn primary" href="/papr-article-template.docx" download>⬇ Download Word template</a>
+          <a className="btn primary" href="/papr-article-template.docx" download><Icon name="download" size={16} /> Download Word template</a>
           <a className="btn" href="/papr-article-template.pdf" target="_blank" rel="noopener">Preview as PDF</a>
           <Link className="btn ghost" href="/submit">Submit research →</Link>
         </div>
       </header>
 
       <div className="facts">
-        {FACTS.map(([e, b, s]) => <div key={b} className="fact"><span aria-hidden>{e}</span><b>{b}</b><span className="small muted">{s}</span></div>)}
+        {FACTS.map(([e, b, s]) => <div key={b} className="fact"><span className="fact-ic"><Icon name={e} size={20} /></span><b>{b}</b><span className="small muted">{s}</span></div>)}
       </div>
 
       <div className="guide-body">

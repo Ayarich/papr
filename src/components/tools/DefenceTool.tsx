@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Question } from "@/lib/defence";
 import { answerFeedback, femaleVoices, lead, makeRecognizer, speechSupported } from "@/lib/panel-voice";
 import SourcePicker, { PublishCTA } from "./SourcePicker";
+import Icon from "@/components/Icon";
 
 export default function DefenceTool({ papers }: { papers: { id: string; title: string; ref: string }[] }) {
   const [res, setRes] = useState<{ questions: Question[]; fromPaper: boolean } | null>(null);
@@ -154,7 +155,7 @@ export default function DefenceTool({ papers }: { papers: { id: string; title: s
               <summary><span className={`lvl ${x.level}`}>{x.level}</span><b>{n + 1}. {x.q}</b></summary>
               <div className="stack" style={{ gap: 6, paddingTop: 8 }}>
                 {x.from && <p className="small muted">From your paper: “{x.from}”</p>}
-                <p className="small">💡 {x.tip}</p>
+                <p className="small ih"><Icon name="idea" size={15} /> {x.tip}</p>
               </div>
             </details>
           ))}
@@ -163,14 +164,14 @@ export default function DefenceTool({ papers }: { papers: { id: string; title: s
         <div className="card pad-lg practice">
           <div className="row between small muted"><span>{q.category} · question {i + 1} of {qs.length}</span><span className={`lvl ${q.level}`}>{q.level}</span></div>
           <div className={`panelist${speaking ? " talking" : ""}`}>
-            <div className="pav" aria-hidden><span>👩🏾‍🏫</span><em><i /><i /><i /><i /></em></div>
+            <div className="pav" aria-hidden><Icon name="mic" size={20} /><em><i /><i /><i /><i /></em></div>
             <div className="stack" style={{ gap: 2, minWidth: 0 }}>
               <b className="small">Panel chair</b>
               <span className="small muted">{!voiceOn ? "Voice off" : speaking ? "Asking…" : listening ? "Listening to your answer…" : running ? "Waiting for your answer" : "Ready"}</span>
             </div>
             <div className="row" style={{ marginLeft: "auto", gap: 6 }}>
-              {voiceOn && <button type="button" className="btn ghost sm" onClick={() => { setRunning(false); stopListening(); say(q.q); }} disabled={speaking}>🔁 Ask again</button>}
-              <button type="button" className="btn sm" aria-pressed={voiceOn} onClick={() => { if (voiceOn) window.speechSynthesis?.cancel(); setVoiceOn(!voiceOn); }} disabled={!speechSupported()}>{voiceOn ? "🔊 Voice on" : "🔇 Voice off"}</button>
+              {voiceOn && <button type="button" className="btn ghost sm" onClick={() => { setRunning(false); stopListening(); say(q.q); }} disabled={speaking}><Icon name="again" size={14} /> Ask again</button>}
+              <button type="button" className="btn sm" aria-pressed={voiceOn} onClick={() => { if (voiceOn) window.speechSynthesis?.cancel(); setVoiceOn(!voiceOn); }} disabled={!speechSupported()}>{voiceOn ? <><Icon name="volume" size={15} /> Voice on</> : <><Icon name="mute" size={15} /> Voice off</>}</button>
             </div>
           </div>
           <h2>{q.q}</h2>
@@ -178,13 +179,13 @@ export default function DefenceTool({ papers }: { papers: { id: string; title: s
           <div className="timer">
             <b className={`num${secs <= 20 ? " low" : ""}`}>{fmt(secs)}</b>
             {running
-              ? <button type="button" className="btn sm" onClick={() => finishAnswer()}>⏹ Finish answer</button>
+              ? <button type="button" className="btn sm" onClick={() => finishAnswer()}><Icon name="stop" size={13} /> Finish answer</button>
               : secs < 120
-                ? <button type="button" className="btn sm" onClick={() => { saidRef.current = ""; setSaid(""); setFeedback(null); setSecs(120); startAnswer(); }} disabled={speaking}>↺ Try again</button>
+                ? <button type="button" className="btn sm" onClick={() => { saidRef.current = ""; setSaid(""); setFeedback(null); setSecs(120); startAnswer(); }} disabled={speaking}><Icon name="again" size={14} /> Try again</button>
                 : <button type="button" className="btn sm" onClick={startAnswer} disabled={speaking}>Start 2-minute answer</button>}
             {canListen
-              ? <label className="small row" style={{ gap: 6 }}><input type="checkbox" checked={micOn} onChange={(e) => { setMicOn(e.target.checked); if (!e.target.checked) stopListening(); else if (running) startListening(); }} /> 🎙 Write down what I say</label>
-              : <span className="small muted">🎙 Speech-to-text works in Chrome or Edge.</span>}
+              ? <label className="small row" style={{ gap: 6 }}><input type="checkbox" checked={micOn} onChange={(e) => { setMicOn(e.target.checked); if (!e.target.checked) stopListening(); else if (running) startListening(); }} /> <Icon name="mic" size={14} /> Write down what I say</label>
+              : <span className="small muted ih"><Icon name="mic" size={14} /> Speech-to-text works in Chrome or Edge.</span>}
           </div>
           {micError && <div className="notice bad small">{micError}</div>}
           {(listening || said) && (
@@ -195,12 +196,12 @@ export default function DefenceTool({ papers }: { papers: { id: string; title: s
               <b>How that sounded</b>
               <span>{feedback.words} words in {fmt(120 - secs)}{feedback.wpm ? ` · ${feedback.wpm} words a minute (${feedback.pace})` : ""}</span>
               {Object.keys(feedback.fillers).length > 0 && <span>Filler words: {Object.entries(feedback.fillers).map(([w, n]) => `“${w}” ×${n}`).join(", ")}</span>}
-              {feedback.hit.length > 0 && <span>✅ You covered: {feedback.hit.join(", ")}</span>}
-              {feedback.miss.length > 0 && <span>➕ Consider mentioning: {feedback.miss.join(", ")}</span>}
+              {feedback.hit.length > 0 && <span className="ih"><Icon name="ok" size={15} /> You covered: {feedback.hit.join(", ")}</span>}
+              {feedback.miss.length > 0 && <span className="ih"><Icon name="plus" size={15} /> Consider mentioning: {feedback.miss.join(", ")}</span>}
             </div>
           )}
           <p className="small muted">Answer out loud, as if the panel is in front of you.</p>
-          {show ? <div className="notice info small">💡 {q.tip}</div> : <button type="button" className="btn ghost sm" onClick={() => setShow(true)}>Show what the panel wants to hear</button>}
+          {show ? <div className="notice info small ih"><Icon name="idea" size={15} /> {q.tip}</div> : <button type="button" className="btn ghost sm" onClick={() => setShow(true)}>Show what the panel wants to hear</button>}
           <div className="row">
             <button type="button" className="btn primary" onClick={() => next("good")}>I nailed it</button>
             <button type="button" className="btn" onClick={() => next("work")}>Needs more work</button>

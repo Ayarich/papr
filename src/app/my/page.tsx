@@ -5,6 +5,7 @@ import { fmtDate } from "@/lib/format";
 import { eventsFor } from "@/lib/submissions";
 import StatusPill from "@/components/StatusPill";
 import WithdrawButton from "./WithdrawButton";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "My submissions" };
@@ -35,7 +36,7 @@ export default async function MyPage({ searchParams }: { searchParams: Promise<{
 
   return (
     <div className="stack">
-      {claimed && <div className="notice ok">🎓 {claimed} is now yours. It shows on your profile, and you&apos;ll be notified when people read it.</div>}
+      {claimed && <div className="notice ok ih"><Icon name="graduate" size={16} /> {claimed} is now yours. It shows on your profile, and you&apos;ll be notified when people read it.</div>}
       {just && (
         <div className="card pad-lg stack" style={{ gap: 14, borderColor: "var(--ok)" }}>
           <div className="row"><div className="success-mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5 9-10" stroke="var(--ok)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></div>
@@ -66,7 +67,7 @@ export default async function MyPage({ searchParams }: { searchParams: Promise<{
               <div className={`comment ${s.status === "rejected" ? "bad" : ""}`}><b>Moderator&apos;s note · {fmtDate(note.created_at)}</b><p style={{ marginTop: 4 }}>{note.note}</p></div>
             )}
             {s.status === "published" && (() => { const r = reach.find((x) => x.submission_id === s.id); return <div className="notice ok small"><b>Live.</b> DOI <span className="num">{s.doi}</span> · <span className="num">{s.views}</span> views · <span className="num">{s.downloads}</span> downloads{r && r.insts ? <> · read at <span className="num">{r.insts}</span> institution{r.insts === 1 ? "" : "s"}</> : null}{r && r.countries > 1 ? <> in <span className="num">{r.countries}</span> countries</> : null}</div>; })()}
-            {s.supervisor_confirmed_at && <span className="okbadge" style={{ alignSelf: "flex-start" }}>✓ Supervisor confirmed</span>}
+            {s.supervisor_confirmed_at && <span className="okbadge" style={{ alignSelf: "flex-start" }}><Icon name="verified" size={13} /> Supervisor confirmed</span>}
             <details>
               <summary className="small muted" style={{ cursor: "pointer", fontWeight: 600 }}>History</summary>
               <ul className="history" style={{ marginTop: 10 }}>
@@ -76,7 +77,7 @@ export default async function MyPage({ searchParams }: { searchParams: Promise<{
             <div className="row">
               {s.status === "changes" && <Link className="btn primary" href={`/my/${s.id}/edit`}>Edit and resubmit</Link>}
               {s.status === "pending" && <a className="btn sm" href={`/papers/${s.ref}/pdf`} target="_blank" rel="noopener">View my PDF</a>}
-              {s.status !== "withdrawn" && <Link className="btn sm" href={`/slides?from=${s.id}`}>✨ Make slides</Link>}
+              {s.status !== "withdrawn" && <Link className="btn sm" href={`/slides?from=${s.id}`}><Icon name="slides" size={15} /> Make slides</Link>}
               {s.status === "published" && <><Link className="btn" href={`/papers/${s.ref}`}>View public page</Link><WithdrawButton id={s.id} /></>}
             </div>
           </div>

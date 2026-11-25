@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TOOL_LIST } from "@/lib/tool-list";
+import Icon from "@/components/Icon";
 
 export const metadata = { title: "Tools" };
 
@@ -11,7 +12,7 @@ export default function ToolsHub() {
       <div className="toolgrid stagger">
         {TOOL_LIST.map((t) => (
           <Link key={t.href} href={t.href} className="toolcard">
-            <span className="emo" aria-hidden="true">{t.emoji}</span>
+            <span className="emo"><Icon name={t.icon} size={22} /></span>
             <span className="tag plain">{t.tag}</span>
             <h3>{t.name}</h3>
             <p className="small muted">{t.desc}</p>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import Wizard from "@/components/Wizard";
 import { collectionFor } from "@/app/collections/actions";
+import Icon from "@/components/Icon";
 
 export const metadata = { title: "Submit research" };
 
@@ -15,7 +16,7 @@ export default async function SubmitPage({ searchParams }: { searchParams: Promi
   return (
     <div className="stack">
       <div className="narrow notice info small row between" style={{ flexWrap: "wrap", gap: 8 }}>
-        <span>📘 First time? Read the <Link href="/guidelines">author guidelines</Link> or start from the <a href="/papr-article-template.docx" download>papr article template</a>.</span>
+        <span className="ih"><Icon name="book" size={16} /> First time? Read the <Link href="/guidelines">author guidelines</Link> or start from the <a href="/papr-article-template.docx" download>papr article template</a>.</span>
       </div>
       <Wizard
         mode="new"

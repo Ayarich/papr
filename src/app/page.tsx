@@ -11,6 +11,7 @@ import { TOOL_LIST } from "@/lib/tool-list";
 import { monthName } from "@/lib/badges";
 import { shortInst } from "@/lib/constants";
 import { ensureIndexed } from "@/lib/indexer";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 
@@ -78,7 +79,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ n
       {potm && (
         <Reveal as="section" className="home-sec">
           <Link href={`/papers/${potm.ref}`} className="potm">
-            <span className="trophy" aria-hidden="true">🏆</span>
+            <span className="trophy"><Icon name="trophy" size={34} strokeWidth={1.75} /></span>
             <div className="stack" style={{ gap: 8 }}>
               <span className="eyebrow">Paper of the Month · {monthName(potm.month)}</span>
               <h2>{potm.title}</h2>
@@ -134,7 +135,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ n
           </div>
         </div>
         <div className="toolgrid compact stagger" style={{ marginTop: 16 }}>
-          {TOOL_LIST.map((t) => <Link key={t.href} href={t.href} className="toolcard"><span className="emo" aria-hidden="true">{t.emoji}</span><h3>{t.name}</h3><p className="small muted">{t.desc}</p></Link>)}
+          {TOOL_LIST.map((t) => <Link key={t.href} href={t.href} className="toolcard"><span className="emo"><Icon name={t.icon} size={20} /></span><h3>{t.name}</h3><p className="small muted">{t.desc}</p></Link>)}
         </div>
       </Reveal>
 
@@ -145,7 +146,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ n
             <span className="eyebrow">Level 300? Start here</span>
             <h2>Find your project topic</h2>
             <p className="muted small">Ready-made ideas from the &ldquo;future research&rdquo; sections of real papers.</p>
-            <div className="stack" style={{ gap: 8 }}>{ideas.map((i, n) => <Link key={n} href={`/papers/${i.ref}`} className="mini-idea">💡 {i.text}</Link>)}</div>
+            <div className="stack" style={{ gap: 8 }}>{ideas.map((i, n) => <Link key={n} href={`/papers/${i.ref}`} className="mini-idea"><Icon name="idea" size={16} /> {i.text}</Link>)}</div>
             <div><Link href="/topics" className="link-arrow">Browse all ideas <Arrow /></Link></div>
           </div>
           <div className="card pad-lg stack">

@@ -6,6 +6,7 @@ import { shortInst } from "@/lib/constants";
 import { reportForSubmission } from "@/lib/sim-check";
 import { words } from "@/lib/validate";
 import ModPanel from "./ModPanel";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Review queue" };
@@ -51,7 +52,7 @@ export default async function ModeratePage({ searchParams }: { searchParams: Pro
         </div>
         <div className="card stack" style={{ gap: 18 }}>
           <div className="row" style={{ gap: 6 }}><span className="tag">{s.field}</span><span className="tag plain">{s.type}</span><span className="small muted num">{s.ref} · v{s.current_version}</span>
-            {s.supervisor_confirmed_at && <span className="okbadge">✓ Supervisor confirmed</span>}</div>
+            {s.supervisor_confirmed_at && <span className="okbadge"><Icon name="verified" size={13} /> Supervisor confirmed</span>}</div>
           <h2>{s.title}</h2>
           <p className="small"><b>{s.authors_text}</b> · {s.programme}, {shortInst(s.institution)} · Supervisor: {s.supervisor_name} ({s.supervisor_email})</p>
           <div><h3 style={{ fontSize: ".95rem", marginBottom: 6 }}>Abstract <span className="muted small num" style={{ fontWeight: 500 }}>({words(s.abstract)} words)</span></h3><p className="small abstract">{s.abstract}</p></div>

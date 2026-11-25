@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Icon from "@/components/Icon";
 
 export default function CopyButton({ text, label }: { text: string; label: string }) {
   const [done, setDone] = useState<"" | "ok" | "fail">("");
@@ -12,7 +13,7 @@ export default function CopyButton({ text, label }: { text: string; label: strin
         setTimeout(() => setDone(""), 2500);
       }}
     >
-      {done === "ok" ? "✓ Copied" : done === "fail" ? "Select the text to copy" : label}
+      {done === "ok" ? <><Icon name="check" size={14} /> Copied</> : done === "fail" ? "Select the text to copy" : label}
     </button>
   );
 }

@@ -5,6 +5,7 @@ import type { AbstractReport } from "@/lib/abstract";
 import type { ProviderResult } from "@/lib/plagiarism-providers";
 import SourcePicker, { PublishCTA } from "./SourcePicker";
 import PlagiarismView from "./PlagiarismView";
+import Icon from "@/components/Icon";
 
 type Res = { report: Report; abstract: AbstractReport; external: ProviderResult | null; provider: string | null; fromPaper: boolean };
 
@@ -34,7 +35,7 @@ export default function PrecheckTool({ papers }: { papers: { id: string; title: 
             <b className="small">Does it have the five parts examiners look for?</b>
             {a.parts.map((p) => (
               <div key={p.key} className={`part-row ${p.found ? "ok" : "no"}`}>
-                <span>{p.found ? "✓" : "✗"}</span>
+                <span>{p.found ? <Icon name="check" size={15} /> : <Icon name="x" size={15} />}</span>
                 <div><b>{p.label}</b>{p.found ? <p className="small muted">“{p.example}”</p> : <p className="small">{p.tip}</p>}</div>
               </div>
             ))}

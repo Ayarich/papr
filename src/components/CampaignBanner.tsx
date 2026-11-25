@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Icon from "@/components/Icon";
 
 export default function CampaignBanner({ id, title, message, left }: { id: string; title: string; message: string; left: string }) {
   const [hidden, setHidden] = useState(false);
@@ -9,7 +10,7 @@ export default function CampaignBanner({ id, title, message, left }: { id: strin
   return (
     <div className="campaign" role="region" aria-label={title}>
       <div className="wrap">
-        <span className="flame" aria-hidden="true">🔥</span>
+        <span className="flame"><Icon name="flame" size={16} /></span>
         <b>{title}</b><span className="msg">{message}</span><span className="left">{left}</span>
         <Link href="/submit" className="go">Drop your paper →</Link>
         <button type="button" aria-label="Hide banner" onClick={() => { setHidden(true); try { sessionStorage.setItem("papr-banner", id); } catch { /* ignore */ } }}>×</button>

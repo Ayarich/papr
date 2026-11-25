@@ -6,6 +6,7 @@ import { FIELDS } from "@/lib/constants";
 import { fmtDate } from "@/lib/format";
 import { OPP_TYPES, oppType } from "@/lib/opportunities";
 import { refreshLive, lastRefresh, freshCutoff } from "@/lib/live-opps";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -58,16 +59,16 @@ export default async function Opps({ searchParams }: { searchParams: Promise<{ t
         <span className="live-dot" aria-hidden="true" />
         <span><b>Live Master&apos;s &amp; PhD listings</b> from {sources.length} source{sources.length === 1 ? "" : "s"} · updated {ago(updated)}</span>
         <span className="row" style={{ gap: 8, marginLeft: "auto" }}>
-          <Link className="tag" href={q({ type: "masters" })}>🎓 Master&apos;s <span className="num">{counts.masters}</span></Link>
-          <Link className="tag" href={q({ type: "phd" })}>🔬 PhD <span className="num">{counts.phd}</span></Link>
+          <Link className="tag" href={q({ type: "masters" })}><Icon name="graduate" size={15} /> Master&apos;s <span className="num">{counts.masters}</span></Link>
+          <Link className="tag" href={q({ type: "phd" })}><Icon name="lab" size={15} /> PhD <span className="num">{counts.phd}</span></Link>
         </span>
       </div>
 
       <div className="chipbar">
-        {user && myFields.length > 0 && <Link className={`tag ${sp.mine ? "" : "plain"}`} href={q({ mine: sp.mine ? "" : "1" })}>✨ For you</Link>}
-        <Link className={`tag ${sp.funded ? "" : "plain"}`} href={q({ funded: sp.funded ? "" : "1" })}>💸 Fully funded</Link>
+        {user && myFields.length > 0 && <Link className={`tag ${sp.mine ? "" : "plain"}`} href={q({ mine: sp.mine ? "" : "1" })}><Icon name="sparkles" size={15} /> For you</Link>}
+        <Link className={`tag ${sp.funded ? "" : "plain"}`} href={q({ funded: sp.funded ? "" : "1" })}><Icon name="money" size={15} /> Fully funded</Link>
         <Link className={`tag ${!sp.type ? "" : "plain"}`} href={q({ type: "" })}>All types</Link>
-        {OPP_TYPES.map((t) => <Link key={t.key} className={`tag ${sp.type === t.key ? "" : "plain"}`} href={q({ type: t.key })}>{t.emoji} {t.label}</Link>)}
+        {OPP_TYPES.map((t) => <Link key={t.key} className={`tag ${sp.type === t.key ? "" : "plain"}`} href={q({ type: t.key })}><Icon name={t.icon} size={15} /> {t.label}</Link>)}
       </div>
       <form action="/opportunities" className="row">
         {sp.type && <input type="hidden" name="type" value={sp.type} />}
@@ -81,7 +82,7 @@ export default async function Opps({ searchParams }: { searchParams: Promise<{ t
           const t = oppType(o.type);
           return (
             <article key={o.id} className="card opp">
-              <span className="opp-emoji" aria-hidden="true">{t.emoji}</span>
+              <span className="opp-emoji"><Icon name={t.icon} size={22} /></span>
               <div className="grow stack" style={{ gap: 6 }}>
                 <div className="row" style={{ gap: 6 }}>
                   <span className="tag plain">{t.label}</span>

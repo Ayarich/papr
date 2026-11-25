@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { RefReport } from "@/lib/references";
 import SourcePicker, { PublishCTA } from "./SourcePicker";
 import CopyButton from "@/components/CopyButton";
+import Icon from "@/components/Icon";
 
 export default function ReferencesTool({ papers }: { papers: { id: string; title: string; ref: string }[] }) {
   const [res, setRes] = useState<{ report: RefReport; fromPaper: boolean } | null>(null);
@@ -18,16 +19,16 @@ export default function ReferencesTool({ papers }: { papers: { id: string; title
       </div>
       {r.stats.references === 0 && <div className="notice gold">We couldn&apos;t find a reference list. Make sure it starts with a heading called <b>References</b>.</div>}
       {r.missingFromList.length > 0 && (
-        <section className="card stack"><h3>❌ Cited in your text, missing from your reference list</h3>
+        <section className="card stack"><h3 className="ih"><Icon name="bad" size={18} /> Cited in your text, missing from your reference list</h3>
           {r.missingFromList.map((c, i) => <div key={i} className="issue-row"><b>{c.surname} ({c.year})</b><span className="small muted">cited {c.count}× as {c.raw}. Add the full reference.</span></div>)}</section>
       )}
       {r.uncited.length > 0 && (
-        <section className="card stack"><h3>⚠️ In your reference list, but never cited</h3>
+        <section className="card stack"><h3 className="ih"><Icon name="warn" size={18} /> In your reference list, but never cited</h3>
           {r.uncited.map((e, i) => <div key={i} className="issue-row"><span className="small">{e.raw}</span><span className="small muted">Cite it in the text, or remove it.</span></div>)}</section>
       )}
       {!r.orderOk && <div className="notice gold">Your reference list isn&apos;t in alphabetical order. APA lists references A–Z by first author&apos;s surname. The corrected list below is sorted for you.</div>}
       {withIssues.length > 0 && (
-        <section className="card stack"><h3>✏️ Formatting fixes</h3>
+        <section className="card stack"><h3 className="ih"><Icon name="pencil" size={18} /> Formatting fixes</h3>
           {withIssues.map((e, i) => (
             <div key={i} className="fix-row"><div className="small muted strike">{e.raw}</div><div className="small"><b>{e.apa}</b></div><ul className="small">{e.issues.map((x) => <li key={x}>{x}</li>)}</ul></div>
           ))}</section>

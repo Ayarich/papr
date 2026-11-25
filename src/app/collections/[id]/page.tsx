@@ -7,6 +7,7 @@ import { fmtDate } from "@/lib/format";
 import StatusPill from "@/components/StatusPill";
 import CopyButton from "@/components/CopyButton";
 import { collectionFor, confirmInCollection } from "../actions";
+import Icon from "@/components/Icon";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Manage collection" };
@@ -55,7 +56,7 @@ export default async function ManageCollection({ params, searchParams }: { param
                     <td><span className="small muted num">{s.ref}</span><br />{s.title}<br /><a className="small" href={`/papers/${s.ref}/pdf`} target="_blank" rel="noopener">Open PDF</a></td>
                     <td><StatusPill status={s.status} /></td>
                     <td className="small num">{fmtDate(s.created_at)}</td>
-                    <td>{s.supervisor_confirmed_at ? <span className="okbadge">✓ Confirmed</span> : (
+                    <td>{s.supervisor_confirmed_at ? <span className="okbadge"><Icon name="verified" size={13} /> Confirmed</span> : (
                       <form action={confirmInCollection}><input type="hidden" name="submissionId" value={s.id} /><button className="btn sm" type="submit">Confirm work</button></form>
                     )}</td>
                   </tr>
