@@ -11,7 +11,7 @@ export default async function Page() {
   const papers = await all<{ id: string; title: string; ref: string }>("SELECT id, title, ref FROM submissions WHERE owner_id = ? ORDER BY updated_at DESC", [user.id]);
   return (
     <div className="stack" style={{ gap: 28 }}>
-      <div><Link href="/tools" className="small muted">← All tools</Link><h1 style={{ marginTop: 8 }}>Poster maker</h1><p className="muted" style={{ marginTop: 8, maxWidth: "60ch" }}>Turn your paper into an A0 poster for project fairs, with a QR code that links to your full paper.</p></div>
+      <div><Link href="/tools" className="small muted">← All tools</Link><h1 style={{ marginTop: 8 }}>Poster maker</h1><p className="muted" style={{ marginTop: 8, maxWidth: "60ch" }}>Turn your paper into an A0 poster for project fairs. Move things around, add your maps and photos, then download it as an editable PowerPoint or a picture.</p></div>
       <PosterTool papers={papers} />
     </div>
   );
