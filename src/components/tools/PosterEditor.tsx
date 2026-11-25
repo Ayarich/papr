@@ -3,6 +3,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { THEMES, type ThemeKey } from "@/lib/deck";
 import { PW, PH, eid, palette, resolve, SWATCHES, readImage, exportPptx, type PosterDoc, type PosterEl } from "@/lib/poster-layout";
 import Icon, { type IconName } from "@/components/Icon";
+import { track } from "@/lib/track";
 
 // A small Canva-style editor for A0 posters: drag to move, handles to resize, double-click to type,
 // add text, images, shapes and a QR code, with undo, snapping guides, layers and autosave.
@@ -214,6 +215,7 @@ export default function PosterEditor({ initial, storageKey, title, link, onResta
   const visibleTitle = doc.els.find((e) => e.type === "text" && e.size && e.size >= 26)?.text || title;
   const placeholders = doc.els.filter((e) => e.placeholder || (e.type === "image" && !e.src)).length;
   const downloadPng = async () => {
+    track("poster-png");
     setBusy("png"); setSel(null); setEditing(null);
     try {
       await new Promise((r) => setTimeout(r, 60));
@@ -224,7 +226,7 @@ export default function PosterEditor({ initial, storageKey, title, link, onResta
     } catch { setMsg("Couldn't make the picture. Try the PowerPoint download instead."); }
     finally { setBusy(""); }
   };
-  const downloadPptx = async () => { setBusy("pptx"); try { await exportPptx(doc, visibleTitle); } finally { setBusy(""); } };
+  const downloadPptx = async () => { track("poster-pptx"); setBusy("pptx"); try { await exportPptx(doc, visibleTitle); } finally { setBusy(""); } };
 
   const u = (v: number) => v * scale;
   const tool = (icon: IconName, label: string, onClick: () => void, opts: { on?: boolean; disabled?: boolean } = {}) => (

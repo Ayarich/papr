@@ -10,10 +10,12 @@ import { checkText } from "@/lib/plagiarism";
 import { externalCheck, providerName } from "@/lib/plagiarism-providers";
 import { defenceQuestions } from "@/lib/defence";
 import { posterContent } from "@/lib/poster-content";
+import { checkStructure } from "@/lib/structure-check";
+import { researchSummary } from "@/lib/research-summary";
 import { APP_URL } from "@/lib/mail";
 import { logActivity } from "@/lib/activity";
 
-const TOOLS = ["references", "precheck", "poster", "defence"];
+const TOOLS = ["references", "precheck", "poster", "defence", "structure", "summary"];
 
 // Runs one of the student tools on an uploaded PDF or one of the student's papers.
 // Uploaded PDFs are only read; they are never stored or added to the plagiarism index.
@@ -56,6 +58,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ tool: s
 
   await logActivity("tool", tool, user?.id);
   if (tool === "references") return NextResponse.json({ ...base, report: checkReferences(text) });
+  if (tool === "structure") return NextResponse.json({ ...base, structure: { report: checkStructure(text, "report"), article: checkStructure(text, "article") } });
+  if (tool === "summary") return NextResponse.json({ ...base, summary: researchSummary(text, meta) });
   if (tool === "defence") return NextResponse.json({ ...base, questions: defenceQuestions(text, { title: sub?.title }) });
   if (tool === "poster") return NextResponse.json({ ...base, poster: posterContent(text, meta) });
 

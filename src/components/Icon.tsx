@@ -3,7 +3,7 @@ import {
   Presentation, ScanSearch, BookCheck, LayoutTemplate, Mic, Flame, Trophy, Lightbulb, GraduationCap, FlaskConical,
   Coins, FileText, PenLine, Tags, UserCheck, BookOpen, Sparkles, Check, X, TriangleAlert, CircleCheck, OctagonX,
   Pause, KeyRound, PartyPopper, Wrench, MonitorPlay, Clock, Volume2, VolumeX, RotateCcw, Square, Hand, Mail, Inbox,
-  Pencil, Library, BadgeCheck, Bell, Briefcase, Flag, Landmark, Code, Pin, Droplet, Eye, Download, Plus, Info, Pencil as Edit, ChevronLeft, ChevronRight, Type, Heading, ImagePlus, Image as ImageIcon, Square as SquareShape, Circle, Undo2, Redo2, Copy, Trash2, BringToFront, SendToBack, Lock, LockOpen, Bold, Italic, AlignLeft, AlignCenter, AlignRight, List, QrCode, Grid3x3, Minus, Palette, MousePointer2, RefreshCw,
+  Pencil, Library, BadgeCheck, Bell, Briefcase, Flag, Landmark, Code, Pin, Droplet, Eye, Download, Plus, Info, Pencil as Edit, ChevronLeft, ChevronRight, Type, Heading, ImagePlus, Image as ImageIcon, Square as SquareShape, Circle, Undo2, Redo2, Copy, Trash2, BringToFront, SendToBack, Lock, LockOpen, Bold, Italic, AlignLeft, AlignCenter, AlignRight, List, QrCode, Grid3x3, Minus, Palette, MousePointer2, RefreshCw, Quote, CalendarDays, ListChecks, ClipboardList, FileUser,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,6 +20,7 @@ const ICONS = {
   copy: Copy, trash: Trash2, front: BringToFront, back: SendToBack, lock: Lock, unlock: LockOpen, bold: Bold, italic: Italic,
   alignLeft: AlignLeft, alignCenter: AlignCenter, alignRight: AlignRight, list: List, qr: QrCode, grid: Grid3x3, minus: Minus,
   palette: Palette, pointer: MousePointer2, reset: RefreshCw,
+  quote: Quote, calendar: CalendarDays, structure: ListChecks, questionnaire: ClipboardList, summary: FileUser,
 } satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICONS;

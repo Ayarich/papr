@@ -65,7 +65,7 @@ const SECTIONS: { key: string; title: string; re: RegExp }[] = [
   { key: "stop", title: "", re: /^(references|bibliography|appendix|appendices|acknowledg(e)?ments?|dedication|declaration)$/ },
 ];
 
-function headingKey(line: string): { key: string; title: string } | null {
+export function headingKey(line: string): { key: string; title: string } | null {
   const raw = line.trim();
   if (raw.length > 80 || raw.split(/\s+/).length > 9 || /[.;]$/.test(raw)) return null;
   const cleaned = raw

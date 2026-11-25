@@ -121,13 +121,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ n
               <li>Similarity pre-check and abstract polisher</li>
               <li>Reference checker with APA 7 formatting</li>
               <li>Slides, an A0 poster, and defence practice</li>
+              <li>Citations, a project planner and a questionnaire builder</li>
             </ul>
-            <Link className="btn primary" href="/tools">Open the tools <Arrow /></Link>
+            <Link className="btn primary" href="/tools">See all {TOOL_LIST.length} tools <Arrow /></Link>
           </div>
           <PromoCarousel />
         </div>
         <div className="toolgrid compact stagger" style={{ marginTop: 16 }}>
-          {TOOL_LIST.map((t) => <Link key={t.href} href={t.href} className="toolcard"><span className="emo"><Icon name={t.icon} size={20} /></span><h3>{t.name}</h3><p className="small muted">{t.desc}</p></Link>)}
+          {TOOL_LIST.filter((t) => t.popular).map((t) => <Link key={t.href} href={t.href} className="toolcard"><span className="emo"><Icon name={t.icon} size={20} /></span><h3>{t.name}</h3><p className="small muted">{t.desc}</p></Link>)}
         </div>
       </Reveal>
 

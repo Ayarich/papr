@@ -52,7 +52,7 @@ export function splitReferences(lines: string[]): string[] {
   return out.map((s) => s.replace(/\s+/g, " ").trim()).filter((s) => s.length > 15);
 }
 
-function sentenceCase(t: string) {
+export function sentenceCase(t: string) {
   const keep = (w: string, i: number) => i === 0 || /^[A-Z]{2,}/.test(w) || /^(Ghana|Ghanaian|Accra|Kumasi|Africa|African|Tarkwa|Takoradi|Sekondi|Tamale|Cape|Coast|Volta|Ashanti|Western|Eastern|Northern|Central|Upper|Region|English|GIS|COVID|Landsat)/.test(w);
   return t.split(" ").map((w, i) => (keep(w, i) ? w : w.toLowerCase())).join(" ").replace(/:\s+([a-z])/g, (_, c) => ": " + c.toUpperCase());
 }
