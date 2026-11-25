@@ -15,6 +15,9 @@ export default async function SubmitPage({ searchParams }: { searchParams: Promi
   }
   return (
     <div className="stack">
+      <div className="narrow notice info small row between" style={{ flexWrap: "wrap", gap: 8 }}>
+        <span>📘 First time? Read the <Link href="/guidelines">author guidelines</Link> or start from the <a href="/papr-article-template.docx" download>papr article template</a>.</span>
+      </div>
       <Wizard
         mode="new"
         email={user.email}
