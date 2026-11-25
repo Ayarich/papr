@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sha256, startSession, isStudentEmail } from "@/lib/auth";
 import { one, run, newId, nowIso, type User } from "@/lib/db";
+import { testLogin } from "@/lib/test-logins";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
   let user = await one<User>("SELECT * FROM users WHERE email = ?", [email]);
   if (!user) {
     const guess = email.split("@")[0].split(/[._-]/).filter((w) => /^[a-z]+$/i.test(w)).map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
-    await run("INSERT INTO users (id, email, name, role, created_at) VALUES (?,?,?,?,?)", [newId(), email, guess, isStudentEmail(email) ? "student" : "reader", nowIso()]);
+    await run("INSERT INTO users (id, email, name, role, created_at) VALUES (?,?,?,?,?)", [newId(), email, testLogin(email) ? `Test ${testLogin(email)!.role[0].toUpperCase()}${testLogin(email)!.role.slice(1)}` : guess, testLogin(email)?.role ?? (isStudentEmail(email) ? "student" : "reader"), nowIso()]);
     user = await one<User>("SELECT * FROM users WHERE email = ?", [email]);
   }
   // Emails listed in ADMIN_EMAILS (Vercel settings) become admins when they log in. Use it to create the first admin.

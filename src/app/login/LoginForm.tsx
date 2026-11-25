@@ -6,6 +6,7 @@ export default function LoginForm({ next }: { next: string }) {
   const [code, setCode] = useState("");
   const [sent, setSent] = useState(false);
   const [devCode, setDevCode] = useState<string | null>(null);
+  const [testAcct, setTestAcct] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -16,7 +17,7 @@ export default function LoginForm({ next }: { next: string }) {
     const j = await r.json().catch(() => ({}));
     setBusy(false);
     if (!r.ok) { setError(j.error || "Something went wrong. Try again."); return; }
-    setSent(true); setDevCode(j.devCode || null); setCode("");
+    setSent(true); setDevCode(j.devCode || null); setTestAcct(!!j.testAccount); setCode("");
   }
 
   async function verify(e: React.FormEvent) {
@@ -44,6 +45,9 @@ export default function LoginForm({ next }: { next: string }) {
   return (
     <form className="stack" onSubmit={verify} noValidate>
       <p>We sent a code to <b>{email}</b>. <button type="button" className="btn ghost sm" onClick={() => { setSent(false); setError(""); }}>Change email</button></p>
+      {testAcct && (
+        <div className="notice info small">This is a shared test account, so no email is sent. Enter the 6-digit code you were given.</div>
+      )}
       {devCode && (
         <div className="notice info small">Test mode: no real email was sent. Your code is <b className="num">{devCode}</b>. You can also see it in the <a href="/dev/outbox" target="_blank">email outbox</a> or in the terminal.</div>
       )}

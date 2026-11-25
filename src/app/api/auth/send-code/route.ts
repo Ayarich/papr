@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { sha256 } from "@/lib/auth";
 import { one, run, newId, nowIso } from "@/lib/db";
 import { sendEmail } from "@/lib/mail";
+import { testLogin } from "@/lib/test-logins";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
@@ -10,6 +11,17 @@ export async function POST(req: Request) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
 
   // Anyone can sign up to read, follow and save ideas. Only .edu.gh accounts can publish (checked when submitting).
+
+  // Shared test accounts: no email is sent; the tester types the fixed code they were given.
+  const test = testLogin(email);
+  if (test) {
+    const since = new Date(Date.now() - 3600000).toISOString();
+    const n = await one<{ n: number }>("SELECT COUNT(*) AS n FROM login_codes WHERE email = ? AND created_at > ?", [email, since]);
+    if ((n?.n || 0) >= 60) return NextResponse.json({ error: "This test account is busy. Try again in a few minutes." }, { status: 429 });
+    await run("INSERT INTO login_codes (id, email, code_hash, expires_at, created_at) VALUES (?,?,?,?,?)",
+      [newId(), email, sha256(test.code), new Date(Date.now() + 10 * 60000).toISOString(), nowIso()]);
+    return NextResponse.json({ ok: true, testAccount: true });
+  }
 
   // Limit: 5 codes per email per hour
   const hourAgo = new Date(Date.now() - 3600000).toISOString();
