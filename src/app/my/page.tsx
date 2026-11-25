@@ -4,7 +4,6 @@ import { all, type Submission } from "@/lib/db";
 import { fmtDate } from "@/lib/format";
 import { eventsFor } from "@/lib/submissions";
 import StatusPill from "@/components/StatusPill";
-import BehindTheScenes from "@/components/BehindTheScenes";
 import WithdrawButton from "./WithdrawButton";
 
 export const dynamic = "force-dynamic";
@@ -83,11 +82,6 @@ export default async function MyPage({ searchParams }: { searchParams: Promise<{
           </div>
         );
       })}
-      <BehindTheScenes points={[
-        "Each change of status sends you an email and adds a line to the history.",
-        "When you resubmit, a new version is saved. Old versions are kept, never overwritten.",
-        "Withdrawing keeps the record and DOI but removes the PDF, so citations don't break.",
-      ]} />
     </div>
   );
 }

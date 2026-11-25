@@ -203,11 +203,6 @@ aside.card { background: var(--subtle); border: 0; position: sticky; top: 92px; 
 .simbar i { display: block; height: 100%; border-radius: 6px; }
 
 /* misc */
-details.bts { border-top: 1px solid var(--line); padding: 0; font-size: .9rem; margin-top: 8px; }
-details.bts summary { cursor: pointer; padding: 14px 0; font-weight: 600; color: var(--muted); }
-details.bts summary:hover { color: var(--ink); }
-details.bts .in { padding: 0 0 14px; display: grid; gap: 8px; color: var(--muted); }
-details.bts ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 pre.code { font-family: var(--mono); font-size: .8rem; background: var(--subtle); border-radius: 12px; padding: 14px; overflow-x: auto; margin: 0; line-height: 1.5; white-space: pre-wrap; }
 code { font-family: var(--mono); font-size: .85em; background: var(--subtle); border-radius: 6px; padding: 1px 6px; }
 .success-mark { width: 52px; height: 52px; border-radius: 50%; background: var(--ok-soft); display: grid; place-items: center; flex: none; }

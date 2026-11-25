@@ -3,7 +3,6 @@ import { all, type Submission } from "@/lib/db";
 import { FIELDS, shortInst } from "@/lib/constants";
 import PaperCard from "@/components/PaperCard";
 import AutoSubmit from "./AutoSubmit";
-import BehindTheScenes from "@/components/BehindTheScenes";
 import FollowButton from "@/components/FollowButton";
 import { getUser } from "@/lib/auth";
 import { isFollowing } from "@/lib/follows";
@@ -76,10 +75,6 @@ export default async function Library({ searchParams }: { searchParams: Promise<
           </div>
         )}
       </div>
-      <BehindTheScenes points={[
-        <>Search runs on the server with SQL <code>LIKE</code> queries over title, abstract, keywords and authors. On PostgreSQL you&apos;d switch to full-text search for better ranking.</>,
-        <>Only papers with status <code>published</code> appear. Pending, declined and withdrawn papers never show here.</>,
-      ]} />
     </div>
   );
 }

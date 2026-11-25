@@ -12,7 +12,6 @@ import { all, one, run, type Submission, type Version } from "@/lib/db";
 import { apa, fmtDate, fmtSize, splitList } from "@/lib/format";
 import { APP_URL } from "@/lib/mail";
 import CopyButton from "@/components/CopyButton";
-import BehindTheScenes from "@/components/BehindTheScenes";
 
 export const dynamic = "force-dynamic";
 
@@ -119,11 +118,6 @@ export default async function PaperPage({ params }: { params: Promise<{ ref: str
             </section>
           )}
           <section className="stack" style={{ gap: 10 }}><h3>How to cite (APA 7)</h3><div className="cite">{citation}</div></section>
-          <BehindTheScenes points={[
-            <>This page has a permanent address: <code>/papers/{p.ref}</code>.</>,
-            <>The page&apos;s HTML includes Google Scholar <code>citation_*</code> meta tags. Open your browser&apos;s &ldquo;View page source&rdquo; to see them.</>,
-            <>Each view adds 1 to the view count, and each PDF download adds 1 to downloads. A live site would count once per visitor per day.</>,
-          ]} />
         </article>
         <aside className="card stack" style={{ gap: 16 }}>
           <div className="kv">

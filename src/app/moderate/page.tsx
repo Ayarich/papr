@@ -6,7 +6,6 @@ import { shortInst } from "@/lib/constants";
 import { reportForSubmission } from "@/lib/sim-check";
 import { words } from "@/lib/validate";
 import ModPanel from "./ModPanel";
-import BehindTheScenes from "@/components/BehindTheScenes";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Review queue" };
@@ -69,11 +68,6 @@ export default async function ModeratePage({ searchParams }: { searchParams: Pro
               <Link href={`/moderate/report/${s.id}`}>Open the full report with highlighted passages →</Link></p>
           </div>
           <ModPanel id={s.id} />
-          <BehindTheScenes points={[
-            "Publish needs every checklist box ticked. Request changes and Decline need a note, which is emailed to the student.",
-            <>Publishing sets status to <code>published</code> and assigns a DOI. Real DOI registration with Crossref is a stub in <code>src/app/moderate/actions.ts</code> for now.</>,
-            "Every decision is saved in the reviews table with your name, the checklist and the time, so decisions can be audited.",
-          ]} />
         </div>
       </div>
     </div>

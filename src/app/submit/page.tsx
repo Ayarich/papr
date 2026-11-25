@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import Wizard from "@/components/Wizard";
-import BehindTheScenes from "@/components/BehindTheScenes";
 import { collectionFor } from "@/app/collections/actions";
 
 export const metadata = { title: "Submit research" };
@@ -25,13 +24,6 @@ export default async function SubmitPage({ searchParams }: { searchParams: Promi
           ...(coll ? { supName: coll.owner_name, supEmail: coll.owner_email } : {}) }}
         collection={coll ? { slug: coll.slug, title: coll.title, owner: coll.owner_name } : undefined}
       />
-      <div className="narrow">
-        <BehindTheScenes points={[
-          "Your answers are saved in this browser as you type, so you can close the tab and continue later. The PDF has to be chosen again after a reload.",
-          "On submit, the form and PDF go to /api/submissions. The server checks every field again, checks the file really is a PDF, and saves it in the uploads folder.",
-          "You get a reference number. Moderators, your supervisor (if you asked) and any co-authors with emails are notified. See them in the Dev email outbox.",
-        ]} />
-      </div>
     </div>
   );
 }
