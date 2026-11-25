@@ -1,11 +1,13 @@
 // The papr logo: a sheet of paper with a folded corner and a rising line (research that grows).
-export function BrandMark({ size = 18 }: { size?: number }) {
+// Same drawing as public/brand/papr-mark.svg; the rounded square comes from the .mark styles.
+export function BrandMark({ size = 20 }: { size?: number }) {
   return (
     <span className="mark" aria-hidden="true">
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-        <path d="M6 3h8l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" fill="currentColor" opacity=".28" />
-        <path className="fold" d="M14 3v4a1 1 0 0 0 1 1h4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M7.5 16.5l3-3.2 2.2 2 3.8-4.3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width={size} height={size} viewBox="11 11 42 42" fill="none">
+        <path d="M21 11h16.5L47 20.5V49a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4V15a4 4 0 0 1 4-4Z" fill="currentColor" />
+        <path className="fold" d="M37.5 11v6.5a3 3 0 0 0 3 3H47Z" fill="currentColor" opacity=".55" />
+        <path d="M23.5 42.5l6.5-6.8 5 4.3 7-8.2" stroke="var(--mark-line, var(--accent))" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="42" cy="31.8" r="3.1" fill="var(--mark-line, var(--accent))" />
       </svg>
     </span>
   );

@@ -5,8 +5,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import RouteProgress from "@/components/RouteProgress";
 import { BrandMark } from "@/components/Brand";
+import { APP_URL } from "@/lib/mail";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(APP_URL),
+  openGraph: { siteName: "papr", type: "website" },
   title: { default: "papr · Ghana's student research, seen", template: "%s · papr" },
   description: "Drop your research. Get it seen. papr is Ghana's open library of final-year projects, theses and papers, free to read, cite and share.",
 };
