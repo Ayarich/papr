@@ -3,7 +3,7 @@ import {
   Presentation, ScanSearch, BookCheck, LayoutTemplate, Mic, Flame, Trophy, Lightbulb, GraduationCap, FlaskConical,
   Coins, FileText, PenLine, Tags, UserCheck, BookOpen, Sparkles, Check, X, TriangleAlert, CircleCheck, OctagonX,
   Pause, KeyRound, PartyPopper, Wrench, MonitorPlay, Clock, Volume2, VolumeX, RotateCcw, Square, Hand, Mail, Inbox,
-  Pencil, Library, BadgeCheck, Bell, Briefcase, Flag, Landmark, Code, Pin, Droplet, Eye, Download, Plus, Info, Pencil as Edit,
+  Pencil, Library, BadgeCheck, Bell, Briefcase, Flag, Landmark, Code, Pin, Droplet, Eye, Download, Plus, Info, Pencil as Edit, ChevronLeft, ChevronRight,
   type LucideIcon,
 } from "lucide-react";
 
@@ -15,7 +15,7 @@ const ICONS = {
   monitor: MonitorPlay, clock: Clock, volume: Volume2, mute: VolumeX, again: RotateCcw, stop: Square, wave: Hand,
   mail: Mail, inbox: Inbox, pencil: Pencil, edit: Edit, library: Library, verified: BadgeCheck, bell: Bell,
   briefcase: Briefcase, flag: Flag, building: Landmark, code: Code, pin: Pin, drop: Droplet, eye: Eye, download: Download,
-  plus: Plus, info: Info,
+  plus: Plus, info: Info, prev: ChevronLeft, next: ChevronRight,
 } satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICONS;

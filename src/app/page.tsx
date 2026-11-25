@@ -5,8 +5,7 @@ import PaperCard from "@/components/PaperCard";
 import Reveal from "@/components/Reveal";
 import Counter from "@/components/Counter";
 import HeroScene from "@/components/HeroScene";
-import { Scaled, SlideView } from "@/components/slides/SlideView";
-import type { Slide } from "@/lib/deck";
+import PromoCarousel from "@/components/PromoCarousel";
 import { TOOL_LIST } from "@/lib/tool-list";
 import { monthName } from "@/lib/badges";
 import { shortInst } from "@/lib/constants";
@@ -19,11 +18,6 @@ const Arrow = () => (
   <svg className="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
 
-const PROMO: { s: Slide; t: "charcoal" | "paper" | "forest"; n: number }[] = [
-  { t: "forest", n: 1, s: { id: "a", layout: "title", title: "Urban Growth in Sekondi-Takoradi", subtitle: "Final-year project · UMaT · 2026", bullets: [], notes: "" } },
-  { t: "paper", n: 6, s: { id: "b", layout: "bullets", title: "Key findings", subtitle: "", bullets: ["Built-up area tripled between 1994 and 2024", "Fastest growth came after oil production began", "Vegetation declined by 41%"], notes: "" } },
-  { t: "charcoal", n: 7, s: { id: "c", layout: "statement", title: "The city tripled in size in thirty years.", subtitle: "The main finding", bullets: [], notes: "" } },
-];
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ notice?: string }> }) {
   const { notice } = await searchParams;
@@ -130,9 +124,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ n
             </ul>
             <Link className="btn primary" href="/tools">Open the tools <Arrow /></Link>
           </div>
-          <div className="promo-stack" aria-hidden="true">
-            {PROMO.map((p, i) => <div key={i}><Scaled><SlideView slide={p.s} theme={p.t} number={p.n} /></Scaled></div>)}
-          </div>
+          <PromoCarousel />
         </div>
         <div className="toolgrid compact stagger" style={{ marginTop: 16 }}>
           {TOOL_LIST.map((t) => <Link key={t.href} href={t.href} className="toolcard"><span className="emo"><Icon name={t.icon} size={20} /></span><h3>{t.name}</h3><p className="small muted">{t.desc}</p></Link>)}
